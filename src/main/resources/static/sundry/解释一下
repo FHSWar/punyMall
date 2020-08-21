@@ -1,0 +1,8 @@
+enums, exception, handler 包都是自己在 myBatisPlus 生成各种东西之后自己建的。
+enums 是为了限定选项，减少程序员的自由发挥，降低团队合作的沟通成本。
+exception 是为了抛异常，在这里是为了维持数据库数据的可靠性。
+handler 是因为有了 @TableField(fill = FieldFill.INSERT_UPDATE) 注解，就要写对应的方法。
+
+会看 Debugger 之后定位错误方便很多。看懂 Debugger 信息是缓慢进步的过程，要有耐心。
+
+这个页面跳转，既能带着数据跳到指定方法，又能跳到指定静态资源，真的很方便啊。

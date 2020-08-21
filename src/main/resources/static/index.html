@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:each="user:${list}">
+        <span th:text="${user.id}"></span>
+        <span th:text="${user.loginName}"></span>
+        <span th:text="${user.userName}"></span>
+        <span th:text="${user.createTime}"></span>
+    </div>
+    <h1>证明一下</h1>
+    <p>不管有没有被模板引擎解析，static 页面中普通的 html 都是可以显示的。</p>
+    <p>模板引擎指定 static 包后 thymeleaf 标签才会被解析成浏览器可渲染的 html。</p>
+    <p>模板引擎解析 th 标签的 el 表达式和视图解析器解析 js，css是两回事。</p>
+</body>
+</html>
