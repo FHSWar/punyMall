@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("//user")
 public class UserController {
-    @Autowired
+    @Autowired // 依赖接口不依赖实现！！！桥接(Bridge)模式！！！
     private UserService userService;
 
     // 注册和登录都有不能明文显示的内容，当然要用 post

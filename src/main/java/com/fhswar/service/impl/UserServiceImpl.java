@@ -40,6 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         int number = this.userMapper.insert(user);
         if (number != 1) return false;
         return true;
+//        return this.save(user); 光这个就能达到一模一样的效果
     }
 
     @Override

@@ -6,3 +6,5 @@ handler 是因为有了 @TableField(fill = FieldFill.INSERT_UPDATE) 注解，就
 会看 Debugger 之后定位错误方便很多。看懂 Debugger 信息是缓慢进步的过程，要有耐心。
 
 这个页面跳转，既能带着数据跳到指定方法，又能跳到指定静态资源，真的很方便啊。
+
+VO 即 view object,作用是封装从数据库拿到的数据为前端直接可用的一个个对象。
