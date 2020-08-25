@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -28,9 +29,11 @@ public class ProductCategoryController {
     ProductCategoryService productCategoryService;
 
     @GetMapping("/list")
-    public List<ProductCategoryVO> getData(){
-        return this.productCategoryService.getAllProductCategoryVO();
+    public ModelAndView list(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("main");
+        modelAndView.addObject("categoryVO",this.productCategoryService.getAllProductCategoryVO());
+        return modelAndView;
     }
-
 }
 
