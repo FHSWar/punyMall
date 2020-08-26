@@ -69,15 +69,15 @@
             </div>
             <div class="fresh_mid">
                 <ul>
-                    <li  th:each="product:${levelOne.levelOneProduct}">
+                    <li  th:each="product:${levelOne.productByLevelOneId}">
                         <div class="name">
-                            <a href="/productDetail.html"  th:text="${product.name}"></a>
+                            <a th:href="'/product/findById/'+${product.id}" th:text="${product.name}"></a>
                         </div>
                         <div class="price">
-                            <font>￥<span   th:text="${product.price}"></span></font> &nbsp;
+                            <font>￥<span th:text="${product.price}"></span></font> &nbsp;
                         </div>
                         <div class="img">
-                            <a href="/productDetail.html">
+                            <a th:href="'/product/findById/'+${product.id}">
                                 <img th:src="'/images/'+${product.fileName}"width="185" height="155" />
                             </a>
                         </div>
@@ -86,10 +86,15 @@
             </div>
             <div class="fresh_right">
                 <ul>
-                    <li><a href="/productDetail.html"><img src="/images/12.png" height="220"
-                                                             /></a></li>
-                    <li><a href="/productDetail.html"><img src="/images/13.png" height="220"
-                                                             style="margin-top: 5px" /></a></li>
+                    <li>
+                        <a href="/product/findById/733">
+                            <img src="/images/12.png" height="220"/>
+                        </a></li>
+                    <li>
+                        <a href="/product/findById/734">
+                            <img src="/images/13.png" height="220" style="margin-top: 5px" />
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

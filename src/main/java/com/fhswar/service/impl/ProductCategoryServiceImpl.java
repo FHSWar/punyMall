@@ -57,8 +57,9 @@ public class ProductCategoryServiceImpl extends ServiceImpl<ProductCategoryMappe
             levelOneCategoryVO.setTop("top"+ n +".png");
             levelOneCategoryVO.setBanner("banner"+ n +".png");
             n++;
-            List<Product> levelOneProduct = this.productService.findProductByCategory(levelOneCategoryVO.getId());
-            levelOneCategoryVO.setLevelOneProduct(levelOneProduct); // 查出来，梭进去！
+            // 这个 findProductByCategory 方法只能在查出一级目录之后才能用。只能哦！这是把产品查出来并梭进了集合里。
+            List<Product> productByLevelOneId = this.productService.findProductByCategory(1, levelOneCategoryVO.getId());
+            levelOneCategoryVO.setProductByLevelOneId(productByLevelOneId); // 查出来，梭进去！
 
             categoryLevelTwo = // 能把 getId 写成 getType 我也真的傻出水平。
                     this.getProductCategoryById(2, levelOneIndividual.getId());

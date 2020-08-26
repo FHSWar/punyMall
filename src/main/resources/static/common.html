@@ -115,10 +115,12 @@
     <!-- search -->
     <div class="top">
         <div class="logo">
-            <a href="/main.html"><img src="/images/logo.png" style="width: 230px;border:0px solid red;"></a>
+            <!-- 点击左上角大图标时实现跳转到有数据的首页，做了默认重定向到带数据的首页，所以注释部分可改为下一行 -->
+<!--            <a href="/productCategory/list"><img src="/images/logo.png" style="width: 230px;border:0px solid red;"></a>-->
+            <a href="/"><img src="/images/logo.png" style="width: 230px;border:0px solid red;"></a>
         </div>
         <div class="search">
-            <form action="/productList.html" method="post">
+            <form action="/static/productList.html" method="post">
                 <input type="text" name="keyWord" class="s_ipt">
                 <input type="submit" value="搜索" class="s_btn">
             </form>
@@ -127,7 +129,7 @@
             <a href="/orderList.html">
                 <div class="car_t">
                     购物车 [
-                    <span>3</span>
+                        <span>3</span>
                     ]
                 </div>
             </a>
@@ -191,16 +193,19 @@
                                     <div class="zj_l_c" th:each="levelTwo:${levelOne.children}">
                                         <h2>
                                             <a
-                                                    href="/productList.html"
+                                                    th:href="'/product/list/2/'+${levelTwo.id}"
                                                     th:text="${levelTwo.name}"
-                                            ></a>
+                                            >
+                                            </a>
                                         </h2>
                                         <!--三级目录元素是包裹在耳机的块块里的-->
                                         <a
-                                                href="/productList.html"
                                                 th:each="levelThree:${levelTwo.children}"
+                                                th:href="'/product/list/3/'+${levelThree.id}"
                                                 th:text="${levelThree.name}"
-                                        ></a>
+                                        <!-- href 放在 each 之前居然也能解析，不过放后面还是安心一点 -->
+                                        >
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -208,11 +213,13 @@
                     </ul>
                 </div>
             </div>
-            <!--轮播图上方的那一栏-->
+            <!--轮播图上方的一栏-->
             <ul class="menu_r">
-                <li><a href="/static/main.html">首页</a></li>
+                <li>
+                    <a href="/">首页</a>
+                </li>
                 <li th:each="levelOne:${categoryVO}">
-                    <a href="/productList.html" th:text="${levelOne.name}"></a>
+                    <a th:href="'/product/list/1/'+${levelOne.id}" th:text="${levelOne.name}"></a>
                 </li>
             </ul>
         </div>

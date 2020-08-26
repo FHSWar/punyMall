@@ -13,4 +13,11 @@ public class RedirectController {
     public String redirect(@PathVariable("url") String url){
         return url;
     }
+
+    // 字符串有个前缀 redirect:
+    // 如果不是直接跳转到静态页面，就需要用到 redirect:
+    // 数据改由从数据库查之后，UserController 的 login 和 logOut 也要重定向的。
+    // 有了下面这个就不需要写 redirect:productCategory/list 这个这么长了。
+    @GetMapping("/")
+    public String mainData(){return "redirect:productCategory/list";}
 }

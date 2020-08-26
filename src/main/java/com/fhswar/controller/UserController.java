@@ -54,7 +54,7 @@ public class UserController {
         if (user == null) throw new WrongRegisteringException(WrongRegisteringEnums.USER_NOT_EXIST);
 
         User checkUser = this.userService.checkUser(user);
-        if (checkUser != null) {session.setAttribute("user", checkUser); return "main";}
+        if (checkUser != null) {session.setAttribute("user", checkUser); return "redirect:/";}
         return "login";
         // 说得严肃一点，这里进行了非空校验和符合性校验。
     }
@@ -62,7 +62,7 @@ public class UserController {
     @GetMapping("/logOut")
     public String logOut(HttpSession session){
         session.invalidate();
-        return "/main.html";
+        return "redirect:/";
     }
 
     // 这个的作用是让测试后台映射以及从数据库到浏览器的数据是否贯通,不删，留作知识点。
