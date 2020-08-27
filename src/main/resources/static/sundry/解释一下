@@ -8,3 +8,5 @@ handler 是因为有了 @TableField(fill = FieldFill.INSERT_UPDATE) 注解，就
 这个页面跳转，既能带着数据跳到指定方法，又能跳到指定静态资源，真的很方便啊。
 
 VO 即 view object,作用是封装从数据库拿到的数据为前端直接可用的一个个对象。
+
+session 很重要，能把应用串起来。比如看过滤器啦，购物车数据啦，结算之类的。

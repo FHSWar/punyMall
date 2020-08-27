@@ -6,7 +6,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data // 傻逼东西，注解都不加，卡了两个钟。不加不光 get set 不会生效，copyProperties 也不会生效。
-public class ProductCategoryVO { // 只在数据库和实体类需要的数据不完全匹配时才有封装 VO 的必要
+public class ProductCategoryVO {
+    // 只在数据库和实体类需要的数据不完全匹配时才有封装 VO 的必要
     String name;
     Integer id;
     List<ProductCategoryVO> children;
