@@ -74,11 +74,14 @@ function subQuantity(obj){
             if(data == "success"){
                 $(".qprice").eq(index).html("￥"+cost);
                 inputObj.val(quantity);
-                if(quantity!=1){
-                    var totalCost = parseInt($("#totalprice").html().substring(1));
-                    totalCost -= price;
-                    $("#totalprice").html("￥"+totalCost);
-                }
+                var totalCost = parseInt($("#totalprice").html().substring(1));
+                totalCost -= price;
+                $("#totalprice").html("￥"+totalCost);
+                // if(quantity!=1){
+                //     var totalCost = parseInt($("#totalprice").html().substring(1));
+                //     totalCost -= price;
+                //     $("#totalprice").html("￥"+totalCost);
+                // }
                 $(".quantity").eq(index).text(quantity);
                 $(".cost").eq(index).text(cost);
                 var searchBarTotalCost = parseInt($("#totalCost").html().substring(1));

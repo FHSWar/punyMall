@@ -44,10 +44,45 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
         for (Cart specificRow: productList){
             cartVO = new CartVO();
             Product productById = this.productMapper.selectById(specificRow.getProductId());
-            BeanUtils.copyProperties(specificRow, cartVO);
             BeanUtils.copyProperties(productById, cartVO);
+            // 妈的，cart 的复制得放在 product 的后面 cartVO 才能得到 cart 的 id，我他妈爆炸
+            BeanUtils.copyProperties(specificRow, cartVO);
             result.add(cartVO);
         }
         return result;
+    }
+
+    @Override
+    public Cart whetherExistInDB(Integer productId, Integer userId) {
+        QueryWrapper<Cart> wrapper = new QueryWrapper<>();
+        wrapper.eq("product_id", productId);
+        wrapper.eq("user_id", userId);
+        return this.cartMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public boolean updateCart(String type, Integer id, Integer productId, Integer quantity, Float cost) {
+        //修改购物车的数量
+        Cart cart = this.cartMapper.selectById(id);
+        Product product = this.productMapper.selectById(productId);
+        Integer val = null;
+        //修改商品库存
+        switch (type){
+            case "sub":
+                val = cart.getQuantity() - quantity;
+                product.setStock(product.getStock()+val);
+                break;
+            case "add":
+                val = quantity - cart.getQuantity();
+                product.setStock(product.getStock()-val);
+                break;
+        }
+        cart.setQuantity(quantity);
+        cart.setCost(cost);
+        // 这两行对数据库进行更新，返 1 说明更新成功，这里有隐患，比如数据库一个成功一个不成功。
+        int cartRow = this.cartMapper.updateById(cart);
+        int productRow = this.productMapper.updateById(product);
+        if(cartRow == 1 && productRow == 1) return true;
+        return false;
     }
 }
