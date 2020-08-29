@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("//user")
-public class UserController {
+public class    UserController {
     @Autowired // 依赖接口不依赖实现！！！桥接(Bridge)模式！！！
     private UserService userService;
 

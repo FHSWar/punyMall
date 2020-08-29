@@ -126,34 +126,34 @@
             </form>
         </div>
         <div class="i_car">
-            <a href="/orderList.html">
+            <a href="/cart/cartVO">
                 <div class="car_t">
                     购物车 [
-                        <span>3</span>
+                    <span th:text="${carts.size()}"></span>
                     ]
                 </div>
             </a>
             <div class="car_bg">
                 <div class="un_login">我的购物车</div>
                 <ul class="cars">
-                    <li>
-                        <div class="img"><a href="/productDetail.html"><img src="/images/mat_1.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="/productDetail.html">相机</a></div>
-                        <div class="price"><font color="#ff4e00">￥300</font> X <span class="quantity">2</span>  =  <span class="cost">600</span></div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="/productDetail.html"><img src="/images/mat_1.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="/productDetail.html">相机</a></div>
-                        <div class="price"><font color="#ff4e00">￥300</font> X <span class="quantity">2</span>  =  <span class="cost">600</span></div>
-                    </li>
-                    <li>
-                        <div class="img"><a href="/productDetail.html"><img src="/images/mat_1.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="/productDetail.html">相机</a></div>
-                        <div class="price"><font color="#ff4e00">￥300</font> X <span class="quantity">2</span>  =  <span class="cost">600</span></div>
+                    <li th:each="cart:${carts}">
+                        <div class="img">
+                            <a href="/productDetail.html" onclick="return false">
+                                <img th:src="'/images/'+${cart.fileName}" width="58" height="58" />
+                            </a>
+                        </div>
+                        <div class="name">
+                            <a href="/productDetail.html" onclick="return false" th:text="${cart.name}"></a>
+                        </div>
+                        <div class="price">
+                            <font color="#ff4e00" th:text="'￥'+${cart.price}">300</font> X
+                            <span class="quantity" th:text="${cart.quantity}"></span>  =
+                            <span class="cost" th:text="${cart.cost}"></span>
+                        </div>
                     </li>
                 </ul>
                 <div class="price_sum">共计&nbsp;<font color="#ff4e00">￥</font><span id="totalCost"></span></div>
-                <div class="price_a"><a href="/settlement1.html">去结算</a></div>
+                <div class="price_a"><a href="  /cart/cartVO">去结算</a></div>
             </div>
         </div>
     </div>
