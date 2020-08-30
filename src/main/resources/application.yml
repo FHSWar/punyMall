@@ -10,7 +10,9 @@ spring:
     suffix: .html
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    这是打印增删改查的数据的，开发环境下才需要打开。
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #    这个是告诉框架哪个是枚举包，不指定的话就是以字符串形式存实例名字，是不行的。（我看报错信息看来的）
   type-enums-package: com.fhswar.enums
+#  这个，加上 pom 的扫包，就能做到在 mybatisPlus 中使用 mybatis。
   mapper-locations: com/fhswar/mapper/xml/*.xml

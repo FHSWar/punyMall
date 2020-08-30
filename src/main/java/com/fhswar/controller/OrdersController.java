@@ -6,6 +6,7 @@ import com.fhswar.entity.User;
 import com.fhswar.service.CartService;
 import com.fhswar.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,6 +39,16 @@ public class OrdersController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("settlement3");
         modelAndView.addObject("orders",orders);
+        modelAndView.addObject("carts",this.cartService.findCartVOListByUserId(user.getId()));
+        return modelAndView;
+    }
+
+    @GetMapping("/list")
+    public ModelAndView getAllByUserId(HttpSession session){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("orderList");
+        User user = (User) session.getAttribute("user");
+        modelAndView.addObject("orderList",this.ordersService.getAllByUserId(user.getId()));
         modelAndView.addObject("carts",this.cartService.findCartVOListByUserId(user.getId()));
         return modelAndView;
     }

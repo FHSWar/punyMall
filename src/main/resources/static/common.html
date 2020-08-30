@@ -87,7 +87,7 @@
         </span> <!-- 在这里写判断语句挺烦心的，每用一个新工具就要重新熟悉新用法，这很不理想。-->
             <span class="fr">
             <span class="fl" th:if="${session.user == null}">你好，请<a href="/login.html" style="color:#ff4e00;">登录</a>&nbsp;<a href="/register.html" style="color:#ff4e00;">免费注册</a>&nbsp;&nbsp;</span>
-            <span class="fl" th:if="${session.user != null}"><a href="/userInfo.html" >欢迎回来，<span th:text="${session.user.loginName}"></span></a>&nbsp;|&nbsp;<a href="/orderList.html">我的订单</a>&nbsp;</span>
+            <span class="fl" th:if="${session.user != null}"><a href="/user/userInfo" >欢迎回来，<span th:text="${session.user.loginName}"></span></a>&nbsp;|&nbsp;<a href="/orderList.html">我的订单</a>&nbsp;</span>
             <span class="fl" th:if="${session.user != null}">|&nbsp;<a href="/user/logOut">注销</a></span>
         </span>
         </div>

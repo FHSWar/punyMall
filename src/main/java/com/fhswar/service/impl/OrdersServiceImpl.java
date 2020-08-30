@@ -1,17 +1,17 @@
 package com.fhswar.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fhswar.VO.OrderDetailVO;
+import com.fhswar.VO.OrdersVO;
 import com.fhswar.entity.*;
-import com.fhswar.mapper.CartMapper;
-import com.fhswar.mapper.OrderDetailMapper;
-import com.fhswar.mapper.OrdersMapper;
-import com.fhswar.mapper.UserAddressMapper;
+import com.fhswar.mapper.*;
 import com.fhswar.service.OrdersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,10 +30,13 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
     private OrdersMapper ordersMapper;
     @Autowired
     private CartMapper cartMapper;
+
     @Autowired
     private OrderDetailMapper orderDetailMapper;
     @Autowired
     private UserAddressMapper userAddressMapper;
+    @Autowired
+    ProductMapper productMapper;
 
     @Override
     public Orders create(String selectAddress, Float cost, User user, String address, String remark) {
@@ -90,5 +93,35 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         wrapper1.eq("user_id", user.getId());
         this.cartMapper.delete(wrapper1);
         return orders;
+    }
+
+    @Override
+    public List<OrdersVO> getAllByUserId(Integer userId) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("user_id", userId);
+        List<Orders> ordersList = this.ordersMapper.selectList(wrapper);
+        List<OrdersVO> ordersVOList = new ArrayList<>();
+        for (Orders orders : ordersList) {
+            OrdersVO ordersVO = new OrdersVO();
+            BeanUtils.copyProperties(orders, ordersVO);
+            //封装订单详情
+            wrapper = new QueryWrapper();
+            wrapper.eq("order_id", orders.getId());
+            List<OrderDetail> orderDetailList = this.orderDetailMapper.selectList(wrapper);
+            List<OrderDetailVO> orderDetailVOList = new ArrayList<>();
+            for (OrderDetail orderDetail : orderDetailList) {
+                OrderDetailVO orderDetailVO = new OrderDetailVO();
+                BeanUtils.copyProperties(orderDetail, orderDetailVO);
+                //查询商品信息
+                wrapper = new QueryWrapper();
+                wrapper.eq("id", orderDetail.getProductId());
+                Product product = this.productMapper.selectOne(wrapper);
+                BeanUtils.copyProperties(product, orderDetailVO);
+                orderDetailVOList.add(orderDetailVO);
+            }
+            ordersVO.setOrderDetailVOList(orderDetailVOList);
+            ordersVOList.add(ordersVO);
+        }
+        return ordersVOList;
     }
 }

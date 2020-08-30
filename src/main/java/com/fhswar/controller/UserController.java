@@ -4,6 +4,7 @@ package com.fhswar.controller;
 import com.fhswar.entity.User;
 import com.fhswar.enums.WrongRegisteringEnums;
 import com.fhswar.exceptions.WrongRegisteringException;
+import com.fhswar.service.CartService;
 import com.fhswar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,9 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("//user")
 public class    UserController {
     @Autowired // 依赖接口不依赖实现！！！桥接(Bridge)模式！！！
-    private UserService userService;
+    UserService userService;
+    @Autowired
+    CartService cartService;
 
     // 注册和登录都有不能明文显示的内容，当然要用 post
     @PostMapping("/register")
@@ -63,6 +66,15 @@ public class    UserController {
     public String logOut(HttpSession session){
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/userInfo")
+    public ModelAndView userInfo(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userInfo");
+        modelAndView.addObject("carts",this.cartService.findCartVOListByUserId(user.getId()));
+        return modelAndView;
     }
 
     // 这个的作用是让测试后台映射以及从数据库到浏览器的数据是否贯通,不删，留作知识点。

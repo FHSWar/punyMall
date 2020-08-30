@@ -50,24 +50,29 @@ public class CartController {
                       @PathVariable("price") Float price,
                       @PathVariable("quantity") Integer quantity,
                       HttpSession session) {
-        Float cost = price * quantity;
+
         // user 对象是 session 的一个 attribute, 这是 UserController 的 login 里 set 的
         User user = (User) session.getAttribute("user");
         // 这里要 new 一个 cart 是我没想到的，我还是太菜了
         Cart cart = new Cart();
-        cart.setCost(cost);
+
         cart.setProductId(productId);
         cart.setUserId(user.getId());
 
         // 这里我自己加了一条逻辑，作用是避免在购物车中同一商品占多行
         Cart cartDB = this.cartService.whetherExistInDB(productId, user.getId());
         if (cartDB == null) {
+            Float cost = price * quantity;
+            cart.setCost(cost);
             // 自己写的时候漏了这个
             cart.setQuantity(quantity);
             this.cartService.save(cart); // 购物车里没同款就存进去
 //        this.cartMapper.insert(cart); 这个和上面效果一摸一样
         } else {
-            cart.setQuantity(cartDB.getQuantity() + quantity); //购物车里有同款的话更新就好了
+            cart.setQuantity(cartDB.getQuantity() + quantity);
+            Float costs=(cartDB.getQuantity()+quantity) *price;
+            //购物车里有同款的话更新就好了
+            cart.setCost(costs);
             QueryWrapper<Cart> wrapper = new QueryWrapper<>();
             wrapper.eq("product_id", productId);
             wrapper.eq("user_id", user.getId());

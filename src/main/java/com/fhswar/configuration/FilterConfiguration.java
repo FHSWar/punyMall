@@ -12,12 +12,15 @@ public class FilterConfiguration {
     @Bean
     public FilterRegistrationBean filterRegistrationBean(){
         // new 出豆子，进行配置
-        FilterRegistrationBean filterFilterRegistrationBean = new FilterRegistrationBean();
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         // 对谁进行配置呢，对 UserFilter 进行配置
-        filterFilterRegistrationBean.setFilter(new UserFilter());
+        filterRegistrationBean.setFilter(new UserFilter());
+
         // 指定 UserFilter 对哪些请求进行过滤
-        filterFilterRegistrationBean.addUrlPatterns("/cart/*");
-        filterFilterRegistrationBean.addUrlPatterns("/orders/*");
-        return filterFilterRegistrationBean;
+        filterRegistrationBean.addUrlPatterns("/cart/*");
+        filterRegistrationBean.addUrlPatterns("/orders/*");
+        filterRegistrationBean.addUrlPatterns("/userInfo.html");
+
+        return filterRegistrationBean;
     }
 }

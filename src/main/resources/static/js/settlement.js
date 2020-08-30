@@ -62,7 +62,10 @@ function subQuantity(obj){
     var id = $(".id").eq(index).val();
     --quantity;
     if(quantity == 0){
+
         quantity = 1;
+        return;
+        // return 能跳出整个方法！！！
     }
     var cost = quantity*price;
     var productId = $(".productId").eq(index).val();
@@ -74,14 +77,9 @@ function subQuantity(obj){
             if(data == "success"){
                 $(".qprice").eq(index).html("￥"+cost);
                 inputObj.val(quantity);
-                var totalCost = parseInt($("#totalprice").html().substring(1));
 
-                if(quantity >= 1){
-                    totalCost -= price;
-                }
-                if(quantity == 1){
-                    alert("不能再减啦！");
-                }
+                var totalCost = parseInt($("#totalprice").html().substring(1));
+                totalCost -= price;
                 $("#totalprice").html("￥"+totalCost);
 
                 // if(quantity!=1){
