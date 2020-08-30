@@ -2,12 +2,15 @@ package com.fhswar.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fhswar.VO.CartVO;
 import com.fhswar.entity.Cart;
 import com.fhswar.entity.Product;
 import com.fhswar.entity.User;
+import com.fhswar.entity.UserAddress;
 import com.fhswar.mapper.CartMapper;
 import com.fhswar.service.CartService;
 import com.fhswar.service.ProductService;
+import com.fhswar.service.UserAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * <p>
@@ -35,6 +39,8 @@ public class CartController {
     private CartService cartService;
     @Autowired
     ProductService productService;
+    @Autowired
+    UserAddressService userAddressService;
 
     // 果然要熟悉业务，这里隐含着加够每次只能加一个商品，所以下面操作的都是某具体商品
     // 根据商品价格数量可以算总额，根据 session 可以拿 user 的 id
@@ -113,6 +119,24 @@ public class CartController {
         //删除购物车
         this.cartService.removeById(id);
         return "redirect:/cart/cartVO";
+    }
+
+    @GetMapping("/goToSettlement2")
+    public ModelAndView goToSettlement2(HttpSession session){
+        // this function is copied directly.
+        User user = (User) session.getAttribute("user");
+        //获取购物车记录
+        List<CartVO> cartVOList = this.cartService.findCartVOListByUserId(user.getId());
+        //地址信息
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("user_id", user.getId());
+        List<UserAddress> userAddressList = this.userAddressService.list(wrapper);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("settlement2");
+        modelAndView.addObject("cartVOList",cartVOList);
+        modelAndView.addObject("userAddressList",userAddressList);
+        modelAndView.addObject("carts",this.cartService.findCartVOListByUserId(user.getId()));
+        return modelAndView;
     }
 }
 

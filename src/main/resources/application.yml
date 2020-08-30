@@ -13,3 +13,4 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 #    这个是告诉框架哪个是枚举包，不指定的话就是以字符串形式存实例名字，是不行的。（我看报错信息看来的）
   type-enums-package: com.fhswar.enums
+  mapper-locations: com/fhswar/mapper/xml/*.xml

@@ -17,6 +17,7 @@ public class FilterConfiguration {
         filterFilterRegistrationBean.setFilter(new UserFilter());
         // 指定 UserFilter 对哪些请求进行过滤
         filterFilterRegistrationBean.addUrlPatterns("/cart/*");
+        filterFilterRegistrationBean.addUrlPatterns("/orders/*");
         return filterFilterRegistrationBean;
     }
 }

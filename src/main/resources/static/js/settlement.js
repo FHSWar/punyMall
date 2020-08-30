@@ -75,8 +75,15 @@ function subQuantity(obj){
                 $(".qprice").eq(index).html("￥"+cost);
                 inputObj.val(quantity);
                 var totalCost = parseInt($("#totalprice").html().substring(1));
-                totalCost -= price;
+
+                if(quantity >= 1){
+                    totalCost -= price;
+                }
+                if(quantity == 1){
+                    alert("不能再减啦！");
+                }
                 $("#totalprice").html("￥"+totalCost);
+
                 // if(quantity!=1){
                 //     var totalCost = parseInt($("#totalprice").html().substring(1));
                 //     totalCost -= price;

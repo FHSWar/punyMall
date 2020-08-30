@@ -2,6 +2,7 @@ package com.fhswar.mapper;
 
 import com.fhswar.entity.Orders;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author fhswar
  * @since 2020-08-19
  */
+@Repository
 public interface OrdersMapper extends BaseMapper<Orders> {
 
 }

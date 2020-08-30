@@ -1,10 +1,19 @@
 package com.fhswar.service.impl;
 
-import com.fhswar.entity.Orders;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fhswar.entity.*;
+import com.fhswar.mapper.CartMapper;
+import com.fhswar.mapper.OrderDetailMapper;
 import com.fhswar.mapper.OrdersMapper;
+import com.fhswar.mapper.UserAddressMapper;
 import com.fhswar.service.OrdersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * <p>
@@ -17,4 +26,69 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> implements OrdersService {
 
+    @Autowired
+    private OrdersMapper ordersMapper;
+    @Autowired
+    private CartMapper cartMapper;
+    @Autowired
+    private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private UserAddressMapper userAddressMapper;
+
+    @Override
+    public Orders create(String selectAddress, Float cost, User user, String address, String remark) {
+
+        //判断当前是新地址还是老地址
+        if(selectAddress.equals("newAddress")){
+            selectAddress = address;
+            //存入数据库
+//            QueryWrapper wrapper = new QueryWrapper();
+//            wrapper.eq("user_id", user.getId());
+//            wrapper.eq("isdefault", 1);
+//            UserAddress oldDefault = this.userAddressMapper.selectOne(wrapper);
+//            oldDefault.setIsdefault(0);
+//            this.userAddressMapper.updateById(oldDefault);
+            this.userAddressMapper.clearDefault(user.getId());
+
+            UserAddress userAddress = new UserAddress();
+            userAddress.setUserId(user.getId());
+            userAddress.setAddress(address);
+            userAddress.setRemark(remark);
+            userAddress.setIsdefault(1);
+            this.userAddressMapper.insert(userAddress);
+        }
+        //存储Orders
+        Orders orders = new Orders();
+        String seriaNumber = null;
+        try {
+            StringBuffer result = new StringBuffer();
+            for(int i=0;i<32;i++) {
+                result.append(Integer.toHexString(new Random().nextInt(16)));
+            }
+            seriaNumber =  result.toString().toUpperCase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        orders.setSerialnumber(seriaNumber);
+        orders.setCost(cost);
+        orders.setUserAddress(selectAddress);
+        orders.setUserId(user.getId());
+        orders.setLoginName(user.getLoginName());
+        this.ordersMapper.insert(orders);
+        //存储OrderDetail
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("user_id", user.getId());
+        List<Cart> cartList = this.cartMapper.selectList(wrapper);
+        for (Cart cart : cartList) {
+            OrderDetail orderDetail = new OrderDetail();
+            orderDetail.setOrderId(orders.getId());
+            BeanUtils.copyProperties(cart, orderDetail);
+            this.orderDetailMapper.insert(orderDetail);
+        }
+        //清空购物车
+        QueryWrapper wrapper1 = new QueryWrapper();
+        wrapper1.eq("user_id", user.getId());
+        this.cartMapper.delete(wrapper1);
+        return orders;
+    }
 }
